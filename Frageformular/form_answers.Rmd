@@ -4,7 +4,7 @@ author: "Kantonales Sozialamt - Sozialversicherungen"
 date: "2023-03-16"
 output: pdf_document
 params:
-  form_answers: ""
+  form_answers: NA
 ---
 
 ```{r setup, include=FALSE}
@@ -30,10 +30,6 @@ Alter: `r params$form_answers$age`
 Datum: `r params$form_answers$dob`
 
 
-
-
-(data$dstelle, data$stellenleit, data$mail, data$telefon, data$comments, data$color, paste(data$hobbies, collapse = ","),
-                   paste(data$fruits, collapse = ","), data$age, data$dob)
 
 
 

@@ -3,6 +3,7 @@ library(shinydashboard)
 library(htmltools)
 library(RSQLite)
 library(rmarkdown)
+library(knitr)
 
 # Define UI
 ui <- fluidPage(
@@ -25,6 +26,7 @@ ui <- fluidPage(
                 flex-direction: column;
                 font-weight: 700;
                 font-size: clamp(1.25rem, 3vw, 2rem);
+                margin: 50px;
                     }",
     
     ".head {
@@ -36,15 +38,48 @@ ui <- fluidPage(
                 background-color: darkblue;
                 flex-direction: column;
                 }",
+    ".div_logo {
+              margin-left: 20px;
+    }",
+    ".logo {
+              width: 15%;
+              height: auto;
+    }",
     "h1   {   color: white;
                 font-weight: 1000;
                   }",
     "h2   {   color: white;
                   }",
-    "p    {   font-size: 20px;
-                  }"
+    "p    {   font-size: clamp(1.25rem, 3vw, 2rem);
+                  }",
+    ".einleitung-text {
+              margin: 50px;
+    }",
+    ".submit {
+              margin-left: 150px;
+              margin-bottom: 200px;
+              margin-top: 100px;
+              padding: 25px 45px;
+              color: #801B23;
+    }",
+    ".download {
+              margin-left: 250px;
+              margin-bottom: 200px;
+              margin-top: 100px;
+              padding: 25px 35px;
+              color: #801B23;
+    }",
+    ".danke {
+              text-align: center;
+              color: black;
+    }"
   ),
+
   
+  
+  div(class="div_logo",
+      img(class="logo", src="logo_ksa.png", alt="Das Logo des Kantons Zürichs")
+      ),
   div(class="head",
       h1("Frageformular 2024"),
       h2("Kantonales Sozialamt - Sozialversicherungen")
@@ -77,20 +112,21 @@ ui <- fluidPage(
   sliderInput("age", "How old are you?", min = 18, max = 100, value = 25),
   
   # Date input
-  dateInput("dob", "What's your date of birth?"),
+  dateInput("dob", "Wann haben Sie den Fragebogen ausgefüllt?"),
+  
+   # Dankesseite
+  conditionalPanel(
+    condition = "input.submit > 0",
+    tags$h1(class="danke", "Danke für das Ausfüllen des Fragebogens!")),
   
   # Action button
-  actionButton("submit", "Submit"),
+  actionButton(class="submit", "submit", "Submit"),
+  
+  downloadButton(class="download",outputId = "report", label = "Download PDF")
 
-  # Display the thank you message
-    conditionalPanel(condition = "input.submit < 0",
-                     h2("Thank you for your submission!")),
-    downloadButton(outputId = "downloadPDF", label = "Download PDF")
+  
+  
 )
-
-
-
-
 
 
 # Define server
@@ -131,42 +167,53 @@ server <- function(input, output, session) {
   onSessionEnded(function() {
     dbDisconnect(con)
   })
-  
-  # Define a reactive variable to track form submission
-  form_submitted <- reactiveVal(FALSE)
-  
-  # Create an observer to update form_submitted when the form is submitted
-  observeEvent(input$submit, {
-    form_submitted(TRUE)
-  })
+
   
   # Create a reactive dataframe to store the form answers
-  form_answers <- reactive({
-    data.frame(dstelle = input$dstelle, stellenleit = input$stellenleit, mail = input$mail, telefon = input$telefon, comments = input$comments, color = input$color,
-               hobbies = input$hobbies, fruits = input$fruits, age = input$age, dob = input$dob)
-  })
+#  form_answers <- reactive({
+#    data.frame(dstelle = input$dstelle, stellenleit = input$stellenleit, mail = input$mail, telefon = input$telefon, comments = input$comments, color = input$color,
+#               hobbies = input$hobbies, fruits = input$fruits, age = input$age, dob = input$dob)
+#  })
   
   # Render the form answers as a table
-  output$form_table <- renderTable({
-    form_answers()
-  })
+#  output$form_table <- renderTable({
+#    form_answers()
+#  })
   
   # Download the PDF
-  output$downloadPDF <- downloadHandler(
-    filename = function() {
-      paste0(input$name, "_responses.pdf")
-    },
+  
+  output$report = downloadHandler(
+    filename = 'myreport.pdf',
+    
     content = function(file) {
-      pdf_file <- file.path(tempdir())
-      rmarkdown::render(
-        input = "form_answers.Rmd",
-        output_format = "pdf_document",
-        output_file = pdf_file,
-        params = list(data = formData())
-      )
-      file.copy(pdf_file, file)
-    }
+      out = knit2pdf('input.Rnw', clean = TRUE)
+      file.rename(out, file) # move pdf to file for downloading
+    },
+    
+    contentType = 'application/pdf'
   )
+  
+#  output$form_answers = downloadHandler(
+#    filename = "fragebogenformular24.pdf",
+#    
+#    filename <- function() {
+#      paste0(input$name, "_responses.pdf")
+#    },
+#      content = function(file) {
+#      pdf_file <- file.path(tempdir(), "form_answers.Rmd")
+#      file.copy("form_answers.Rmd", pdf_file, overwrite = TRUE)
+#      # Set up paramters for .Rmd
+#      params = list(data = form_answers)
+#      
+#      rmarkdown::render(pdf_file, 
+#                        output_file = file,
+#                        params = params,
+#                        envir = new.env(parent = globalenv())
+        
+#      )
+   
+#    }
+#  )
   
 }
 
