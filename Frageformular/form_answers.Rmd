@@ -1,0 +1,39 @@
+---
+title: "Frageformular 24 - Antworten"
+author: "Kantonales Sozialamt - Sozialversicherungen"
+date: "2023-03-16"
+output: pdf_document
+params:
+  form_answers: ""
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Durchführungsstelle: `r params$form_answers$dstelle`
+
+Stellenleiter/in: `r params$form_answers$stellenleit`
+
+E-Mail: `r params$form_answers$mail`
+
+Telefon: `r params$form_answers$telefon`
+
+Lieblingsfarbe: `r params$form_answers$color`
+
+Hobbies: `r params$form_answers$hobbies`
+
+Früchte: `r params$form_answers$fruits`
+
+Alter: `r params$form_answers$age`
+
+Datum: `r params$form_answers$dob`
+
+
+
+
+(data$dstelle, data$stellenleit, data$mail, data$telefon, data$comments, data$color, paste(data$hobbies, collapse = ","),
+                   paste(data$fruits, collapse = ","), data$age, data$dob)
+
+
+
