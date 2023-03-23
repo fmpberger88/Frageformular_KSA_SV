@@ -1,7 +1,29 @@
-* {
-  background: black;
-}
+body {font-family: Arial;
+      },
 
-h1 {
-  color: red;
-}
+.text-input {
+                display: flex;
+                justify-content: left;
+                align-items: left;
+                height: 400px;
+                flex-direction: column;
+                font-weight: 700;
+                font-size: clamp(1.25rem, 3vw, 2rem);
+                    },
+      
+.head {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 300px;
+                border: 3px solid darkblue;
+                background-color: darkblue;
+                flex-direction: column;
+                },
+h1   {   color: white;
+                font-weight: 1000;
+                  },
+h2   {   color: white;
+                  },
+p    {   font-size: 20px;
+                  }"

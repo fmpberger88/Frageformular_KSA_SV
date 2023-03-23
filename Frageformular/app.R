@@ -10,13 +10,14 @@ ui <- fluidPage(
     tags$link(rel = "stylesheet", href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),
     tags$link(rel = "stylesheet", href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"),
     tags$script(src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")),
-  
-  
-    tags$style(
-      "body {font-family: Arial;
+  # Die Einbindung des externen Stylesheets funktioniert leider nicht. 
+  # tags$script(rel = "stylesheet", type = "text/css", href = here::here("www/style.css")),
+
+  tags$style(
+    "body {font-family: Arial;
       }",
-      
-      ".text-input {
+    
+    ".text-input {
                 display: flex;
                 justify-content: left;
                 align-items: left;
@@ -25,8 +26,8 @@ ui <- fluidPage(
                 font-weight: 700;
                 font-size: clamp(1.25rem, 3vw, 2rem);
                     }",
-      
-      ".head {
+    
+    ".head {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -35,20 +36,19 @@ ui <- fluidPage(
                 background-color: darkblue;
                 flex-direction: column;
                 }",
-      "h1   {   color: white;
+    "h1   {   color: white;
                 font-weight: 1000;
                   }",
-      "h2   {   color: white;
+    "h2   {   color: white;
                   }",
-      "p    {   font-size: 20px;
+    "p    {   font-size: 20px;
                   }"
-      ),
+  ),
   
   div(class="head",
       h1("Frageformular 2024"),
       h2("Kantonales Sozialamt - Sozialversicherungen")
   ),
-  
   div(class = "einleitung-text",
       p("Pro Durchführungsstelle ist ein Fragebogen bis zum 28. Februar 2024 auszufüllen. Bei IKZL Gemeinden und SVA-Gemeinden sind alle Angaben durch die IKZL-Durchführungsstellen
          beziehungsweise durch die SVA gesamthaft zu erfassen (inklusive angeschlossene Gemeinden")),
